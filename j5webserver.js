@@ -25,7 +25,7 @@ var board = new five.Board();
   io.sockets.on('connection', function (socket) {// WebSocket Connection
     console.log("Connected to Websocket on port 8080");
     socket.on('light', function(data) { //get light switch status from client
-      console.log("Switch has been switched" + data);
+      console.log("Switch has been switched: " + data);
       led.toggle();
 
     });
