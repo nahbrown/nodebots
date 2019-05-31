@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Control LED light</h1>
+<form>
+<input type="checkbox" id="ledOn">\n
+<input type="checkbox" id="servoMin">\n
+<input type="checkbox" id="servoMax">\n 
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> <!-- include socket.io client side script -->
+<script>
+var socket = io(); //load socket.io-client and connect to the host that serves the page
+window.addEventListener("load", function(){ //when page loads
+  var lightbox = document.getElementById("ledOn");
+  var servomax = document.getElementById("servoMax");
+  var servomin = document.getElementById("servoMin"); 
+  lightbox.addEventListener("change", function() { //add event listener for when checkbox changes
+    socket.emit("ledOn", Number(this.checked)); //send button status to server (as 1 or 0)
+  });
+lightbox.addEventListener("change", function() {
+    socket.emit("servoMin", Number(this.checked)); //send button status to server (as 1 or 0)
+});
+lightbox.addEventListener("change", function() { 
+    socket.emit("servoMax", Number(this.checked)); //send button status to server (as 1 or 0)
+});});
+socket.on('ledOn', function (data) { //get button status from client
+  document.getElementById("ledOn").checked = data; //change checkbox according to push button on Raspberry Pi
+  socket.emit("ledOn", data); //send push button status to back to server
+});
+socket.on('servoMin', function (data) { //get button status from client
+  document.getElementById("servoMin").checked = data; //change checkbox according to push button on Raspberry Pi
+  socket.emit("servoMin", data); //send push button status to back to server
+});
+socket.on('servoMax', function (data) { //get button status from client
+  document.getElementById("servoMax").checked = data; //change checkbox according to push button on Raspberry Pi
+  socket.emit("servoMax", data); //send push button status to back to server
+});
+</script>
+</html>
+</body>
+</html>
